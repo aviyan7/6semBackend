@@ -1,37 +1,30 @@
 package com.project.study.model;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-
 import java.time.Instant;
+import java.util.List;
 
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class Post {
+@Builder
+public class SubGroup {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long postId;
-
-    @NonNull
-    private String postName;
-
-    @Nullable
-    @Lob
+    private Long subGroupId;
+    private String name;
     private String description;
-
+    @OneToMany(fetch = LAZY)
+    private List<Post> posts;
     private Instant createdDate;
-    @ManyToOne
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @ManyToOne(fetch = LAZY)
     private User user;
-    @ManyToOne
-    @JoinColumn(name = "subGroupId", referencedColumnName = "subGroupId")
-    private SubGroup subGroup;
-
 }
