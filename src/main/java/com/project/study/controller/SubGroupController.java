@@ -2,6 +2,8 @@ package com.project.study.controller;
 
 import com.project.study.dto.SubGroupDto;
 import com.project.study.service.SubGroupService;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,9 @@ import java.util.List;
 public class SubGroupController {
     private final SubGroupService subGroupService;
 
-    @PostMapping
+    private final HttpServletRequest request;
+
+    @PostMapping()
     public ResponseEntity<SubGroupDto> createSubGroup(@RequestBody SubGroupDto subGroupDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(subGroupService.save(subGroupDto));
     }
