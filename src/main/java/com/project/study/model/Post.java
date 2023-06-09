@@ -8,8 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,10 +31,14 @@ public class Post {
 
     private Instant createdDate;
     @ManyToOne
-    @JoinColumn(name="id", referencedColumnName = "id")
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private User user;
     @ManyToOne
     @JoinColumn(name = "subGroupId", referencedColumnName = "subGroupId")
     private SubGroup subGroup;
+
+    @OneToMany
+    @Nullable
+    private List<Comment> comment = new ArrayList<>();
 
 }

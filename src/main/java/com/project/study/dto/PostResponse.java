@@ -1,8 +1,14 @@
 package com.project.study.dto;
 
+import com.project.study.model.Comment;
+import com.project.study.model.SubGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -12,10 +18,11 @@ public class PostResponse {
     private String postName;
     private String description;
     private String userName;
-    private String subGroupName;
+    private SubGroup subGroupName;
     private Integer voteCount;
     private Integer commentCount;
-    private String duration;
+    private Instant CreatedDate;
     private boolean upVote;
     private boolean downVote;
+    private List<CommentsDto> comment = new ArrayList<>();
 }

@@ -2,6 +2,7 @@ package com.project.study.controller;
 
 import com.project.study.dto.PostRequest;
 import com.project.study.dto.PostResponse;
+import com.project.study.model.Post;
 import com.project.study.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,20 @@ public class PostController {
     PostService postService;
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody PostRequest postRequest) {
+    public ResponseEntity<Void> createPost(@RequestBody PostRequest postRequest) throws Exception {
         postService.save(postRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> getAllPosts() {
+    public ResponseEntity<List<PostResponse>> getAllPosts() throws Exception {
         return status(HttpStatus.OK).body(postService.getAllPosts());
     }
+
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<List<PostResponse>> updatePost(){
+//        return status(HttpStatus.OK).body(postService.updatePost(id));
+//    }
 
 }
