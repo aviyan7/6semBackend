@@ -2,6 +2,7 @@ package com.project.study.repository;
 
 import com.project.study.model.Post;
 import com.project.study.model.SubGroup;
+import com.project.study.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllBySubGroup(SubGroup subgroup);
+
+    List<Post> findAllByUser(User user);
 
 }

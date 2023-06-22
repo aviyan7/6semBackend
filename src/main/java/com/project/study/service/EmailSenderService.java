@@ -11,7 +11,7 @@ public class EmailSenderService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    private final String toEmail = "jaslaiemailpathauneteskoemail";
+    private final String toEmail = "milanparajuli2058@gmail.com";
 
     public void sendEmail(EmailMessage emailMessage) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();

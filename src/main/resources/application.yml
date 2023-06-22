@@ -13,12 +13,12 @@
           format_sql: true
       database: mysql
       database-platform: org.hibernate.dialect.MySQLDialect
-
+#    tiyopasswordkbujheuni
     mail:
       host: smtp.gmail.com
       port: 587
-      username: jaskobatapathauneteskoTuck
-      password: tiyopasswordkbujheuni
+      username: tuckingtrue@gmail.com
+      password: pmjktchdenhlieuw
       properties:
         mail:
           smtp:

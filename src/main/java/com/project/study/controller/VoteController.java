@@ -19,7 +19,7 @@ public class VoteController {
     VoteService voteService;
 
     @PostMapping
-    public ResponseEntity<Void> vote(@RequestBody VoteDto voteDto) {
+    public ResponseEntity<Void> vote(@RequestBody VoteDto voteDto) throws Exception {
         voteService.vote(voteDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

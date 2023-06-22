@@ -32,10 +32,15 @@ public class PostController {
         return status(HttpStatus.OK).body(postService.getAllPosts());
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<List<PostResponse>> getAllUserPosts() throws Exception {
+        return status(HttpStatus.OK).body(postService.getAllUserPosts());
+    }
+
 
 //    @PutMapping("/{id}")
 //    public ResponseEntity<List<PostResponse>> updatePost(){
 //        return status(HttpStatus.OK).body(postService.updatePost(id));
-//    }
+//    }1070147324300015
 
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -27,4 +28,7 @@ public class SubGroup {
     private Instant createdDate;
     @ManyToOne(fetch = LAZY)
     private User user;
+
+    @ElementCollection
+    private List<String> imageName;
 }

@@ -25,12 +25,11 @@ public class CommentService {
     public void save(CommentsDto commentsDto) throws Exception {
         Post post = postRepository.findById(commentsDto.getPostId()).orElseThrow(Exception::new);
         Comment comment = new Comment();
-//        comment.setId(commentsDto.getId());
+
         comment.setUser(userService.getCurrentUser());
         comment.setPost(post);
         comment.setText(commentsDto.getText());
         comment.setCreatedDate(java.time.Instant.now());
-        System.out.println("jjsjs"+comment);
         commentRepository.save(comment);
     }
 }

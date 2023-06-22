@@ -5,9 +5,11 @@ import com.project.study.model.SubGroup;
 import com.project.study.repository.SubGroupRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +17,20 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class SubGroupService {
-    private final SubGroupRepository subGroupRepository;
+    @Autowired
+    SubGroupRepository subGroupRepository;
+
+    @Autowired
+    UserService userService;
 
     @Transactional
     public SubGroupDto save(SubGroupDto subGroupDto){
         SubGroup subGroup = new SubGroup();
         subGroup.setName(subGroupDto.getName());
         subGroup.setDescription(subGroupDto.getDescription());
+        subGroup.setImageName(subGroupDto.getImages());
+        subGroup.setCreatedDate(java.time.Instant.now());
+        subGroup.setUser(userService.getCurrentUser());
         SubGroup savedSubGroup = subGroupRepository.save(subGroup);
         subGroupDto.setId(savedSubGroup.getSubGroupId());
         return subGroupDto;
@@ -37,6 +46,7 @@ public class SubGroupService {
             subGroupDto.setName(subGroup.getName());
             subGroupDto.setDescription(subGroup.getDescription());
             subGroupDto.setNumberOfPosts(subGroup.getPosts().size());
+            subGroupDtos.add(subGroupDto);
         }
         return subGroupDtos;
     }

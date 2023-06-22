@@ -26,9 +26,10 @@ public class VoteService {
     @Autowired
     UserService userService;
     @Transactional
-    public void vote(VoteDto voteDto) {
-        Optional<Post> post = postRepository.findById(voteDto.getPostId());
-//        Optional<Vote> voteByPostAndUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post, userService.getCurrentUser());
+    public void vote(VoteDto voteDto) throws Exception{
+        Post post = postRepository.findById(voteDto.getPostId()).orElseThrow(Exception::new);
+        Optional<Vote> voteByPostAndUser = voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post, userService.getCurrentUser());
+        System.out.println("hawa"+voteByPostAndUser);
 //        if (voteByPostAndUser.isPresent() &&
 //                voteByPostAndUser.get().getVoteType()
 //                        .equals(voteDto.getVoteType())) {

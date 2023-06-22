@@ -6,6 +6,7 @@ import com.project.study.dto.PostResponse;
 import com.project.study.model.Comment;
 import com.project.study.model.Post;
 import com.project.study.model.SubGroup;
+import com.project.study.model.User;
 import com.project.study.repository.CommentRepository;
 import com.project.study.repository.PostRepository;
 import com.project.study.repository.SubGroupRepository;
@@ -79,9 +80,35 @@ public class PostService {
                 commentsDto.setUserName(comment.getUser().getUsername());
                 commentsDtos.add(commentsDto);
             }
-//            if(commentRepository.findById(post.getPostId()).isPresent()){
-//                System.out.println(commentRepository.findById(post.getPostId()).get());
-//            }
+            postResponse.setComment(commentsDtos);
+            postResponses.add(postResponse);
+        }
+        return postResponses;
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostResponse> getAllUserPosts() throws Exception {
+        User user = userService.getCurrentUser();
+        List<Post> posts = postRepository.findAllByUser(user);
+        List<PostResponse> postResponses = new ArrayList<>(posts.size());
+        for (Post post : posts) {
+            PostResponse postResponse = new PostResponse();
+            postResponse.setId(post.getPostId());
+            postResponse.setPostName(post.getPostName());
+            postResponse.setDescription(post.getDescription());
+            postResponse.setUserName(post.getUser().getFirstname());
+            postResponse.setCreatedDate(post.getCreatedDate());
+            postResponse.setSubGroupName(post.getSubGroup());
+            List<Comment> commentList = commentRepository.findAllByPost_PostId(post.getPostId());
+            List<CommentsDto> commentsDtos = new ArrayList<>(commentList.size());
+            for(Comment comment : commentList){
+                CommentsDto commentsDto = new CommentsDto();
+                commentsDto.setId(comment.getCommentId());
+                commentsDto.setText(comment.getText());
+                commentsDto.setCreatedDate(comment.getCreatedDate());
+                commentsDto.setUserName(comment.getUser().getUsername());
+                commentsDtos.add(commentsDto);
+            }
             postResponse.setComment(commentsDtos);
             postResponses.add(postResponse);
         }
