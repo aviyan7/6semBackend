@@ -25,3 +25,11 @@
             auth: true
             starttls:
               enable: true
+
+    cache:
+      type: redis
+      cache-names: randomNumber
+
+    jackson:
+      serialization:
+        fail-on-empty-beans: false

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 @Service
 public class FileStorageService {
-    private final Path root = Paths.get("D:\\myprojects\\gitbataeautaprojectre\\examplela");
+    private final Path root = Paths.get("D:\\myprojects\\gitbataeautaprojectre\\studyFrontend\\studyFrontend\\src\\assets");
 
     public void init() {
         try {

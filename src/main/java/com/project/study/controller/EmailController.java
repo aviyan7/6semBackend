@@ -20,4 +20,11 @@ public class EmailController {
         this.emailSenderService.sendEmail(emailMessage);
         return ResponseEntity.ok("Success");
     }
+
+    @PostMapping("/forgot-password")
+    @ResponseStatus(code = HttpStatus.OK)
+    public ResponseEntity<String> forgotPassword(@RequestBody String email) {
+        this.emailSenderService.forgotPassword(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -41,4 +41,6 @@ public class Post {
     @Nullable
     private List<Comment> comment = new ArrayList<>();
 
+    @ElementCollection
+    private List<String> imageName;
 }

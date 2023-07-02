@@ -1,5 +1,6 @@
 package com.project.study.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.study.model.Comment;
 import com.project.study.model.SubGroup;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,5 @@ public class PostResponse {
     private boolean upVote;
     private boolean downVote;
     private List<CommentsDto> comment = new ArrayList<>();
+    private List images;
 }

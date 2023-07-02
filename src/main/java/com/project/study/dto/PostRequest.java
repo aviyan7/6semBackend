@@ -18,4 +18,5 @@ public class PostRequest {
     private String description;
 
     private List<Comment> commentList = new ArrayList<>();
+    private List images;
 }

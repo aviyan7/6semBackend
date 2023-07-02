@@ -3,6 +3,7 @@ package com.project.study.service;
 import com.project.study.dto.CommentsDto;
 import com.project.study.dto.PostRequest;
 import com.project.study.dto.PostResponse;
+import com.project.study.dto.SubGroupDto;
 import com.project.study.model.Comment;
 import com.project.study.model.Post;
 import com.project.study.model.SubGroup;
@@ -32,6 +33,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final SubGroupRepository subGroupRepository;
     private final UserService userService;
+    private final FileStorageService fileStorageService;
 
     public void save(PostRequest postRequest) throws Exception {
         SubGroup subGroup = subGroupRepository.findByName(postRequest.getSubGroupName()).orElseThrow(Exception::new);
@@ -40,6 +42,7 @@ public class PostService {
         post.setDescription(postRequest.getDescription());
         post.setCreatedDate(java.time.Instant.now());
         post.setUser(userService.getCurrentUser());
+        post.setImageName(postRequest.getImages());
         List<Comment> commentList = new ArrayList<>();
 
         if (!Objects.isNull(postRequest.getPostId())) {
@@ -60,16 +63,25 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public List<PostResponse> getAllPosts() throws Exception {
-        List<Post> posts = postRepository.findAll();
+//        List<Post> posts = postRepository.findAll();
+        List<SubGroup> subGroups = subGroupRepository.findAllByUsers(userService.getCurrentUser());
+        List<Post> posts = new ArrayList<>();
+        for(SubGroup subGroup: subGroups){
+            postRepository.findAllBySubGroup(subGroup).forEach(f->{
+                posts.add(f);
+            });
+        }
+//        List<Post> posts = postRepository.findAllByUser_Id(userService.getCurrentUser().getId());
         List<PostResponse> postResponses = new ArrayList<>(posts.size());
         for (Post post : posts) {
             PostResponse postResponse = new PostResponse();
             postResponse.setId(post.getPostId());
             postResponse.setPostName(post.getPostName());
             postResponse.setDescription(post.getDescription());
-            postResponse.setUserName(post.getUser().getUsername());
+            postResponse.setUserName(post.getUser().getFirstname());
             postResponse.setCreatedDate(post.getCreatedDate());
             postResponse.setSubGroupName(post.getSubGroup());
+            postResponse.setImages(post.getImageName());
             List<Comment> commentList = commentRepository.findAllByPost_PostId(post.getPostId());
             List<CommentsDto> commentsDtos = new ArrayList<>(commentList.size());
             for(Comment comment : commentList){
@@ -99,6 +111,7 @@ public class PostService {
             postResponse.setUserName(post.getUser().getFirstname());
             postResponse.setCreatedDate(post.getCreatedDate());
             postResponse.setSubGroupName(post.getSubGroup());
+            postResponse.setImages(post.getImageName());
             List<Comment> commentList = commentRepository.findAllByPost_PostId(post.getPostId());
             List<CommentsDto> commentsDtos = new ArrayList<>(commentList.size());
             for(Comment comment : commentList){

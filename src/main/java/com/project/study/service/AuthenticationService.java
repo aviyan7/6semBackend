@@ -9,6 +9,8 @@ import com.project.study.model.User;
 import com.project.study.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,21 +23,28 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmailSenderService emailSenderService;
 
     public AuthenticationResponse register(RegisterRequest request){
+        var otp = emailSenderService.registerUser(request);
         var user = User.builder()
                 .firstname(request.getFirstName())
                 .lastname(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .address(request.getAddress())
                 .role(Role.USER)
                 .build();
 
         repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .token(String.valueOf(otp))
                 .build();
+//        var jwtToken = jwtService.generateToken(user);
+//        return AuthenticationResponse.builder()
+//                .token(jwtToken)
+//                .token(otp.getToken())
+//                .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
@@ -55,5 +64,9 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public ResponseEntity verifyOtp(Integer otp){
+        return (ResponseEntity) ResponseEntity.status(200);
     }
 }

@@ -1,5 +1,6 @@
 package com.project.study.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class User implements UserDetails {
     private String address;
     @Enumerated(EnumType.STRING)
     private Role role;
-
+    private boolean enabled;
 
 
     @Override
@@ -66,6 +67,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }
