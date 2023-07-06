@@ -7,6 +7,7 @@ import com.project.study.config.JwtService;
 import com.project.study.model.Role;
 import com.project.study.model.User;
 import com.project.study.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final EmailSenderService emailSenderService;
 
-    public AuthenticationResponse register(RegisterRequest request){
+    public String register(RegisterRequest request){
         var otp = emailSenderService.registerUser(request);
         var user = User.builder()
                 .firstname(request.getFirstName())
@@ -37,9 +38,10 @@ public class AuthenticationService {
                 .build();
 
         repository.save(user);
-        return AuthenticationResponse.builder()
-                .token(String.valueOf(otp))
-                .build();
+        return otp;
+//        return AuthenticationResponse.builder()
+//                .token(String.valueOf(otp))
+//                .build();
 //        var jwtToken = jwtService.generateToken(user);
 //        return AuthenticationResponse.builder()
 //                .token(jwtToken)

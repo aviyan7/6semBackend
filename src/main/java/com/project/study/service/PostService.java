@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -36,7 +37,8 @@ public class PostService {
     private final FileStorageService fileStorageService;
 
     public void save(PostRequest postRequest) throws Exception {
-        SubGroup subGroup = subGroupRepository.findByName(postRequest.getSubGroupName()).orElseThrow(Exception::new);
+        SubGroup subGroup = subGroupRepository.findById(postRequest.getSubGroupId()).orElseThrow(Exception::new);
+//        SubGroup subGroup = subGroupRepository.findByName(postRequest.getSubGroupName()).orElseThrow(Exception::new);
         Post post = new Post();
         post.setPostName(postRequest.getPostName());
         post.setDescription(postRequest.getDescription());
@@ -111,6 +113,7 @@ public class PostService {
             postResponse.setUserName(post.getUser().getFirstname());
             postResponse.setCreatedDate(post.getCreatedDate());
             postResponse.setSubGroupName(post.getSubGroup());
+//            Optional<SubGroup> subGroup = subGroupRepository.findById(post.getSubGroup().getSubGroupId());
             postResponse.setImages(post.getImageName());
             List<Comment> commentList = commentRepository.findAllByPost_PostId(post.getPostId());
             List<CommentsDto> commentsDtos = new ArrayList<>(commentList.size());

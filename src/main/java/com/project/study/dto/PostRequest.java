@@ -13,7 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class PostRequest {
     private Long postId;
-    private String subGroupName;
+    private Long subGroupId;
+//    private String subGroupName;
     private String postName;
     private String description;
 

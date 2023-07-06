@@ -1,8 +1,10 @@
 package com.project.study.service;
 
 import com.project.study.dto.SubGroupDto;
+import com.project.study.model.Post;
 import com.project.study.model.SubGroup;
 import com.project.study.model.User;
+import com.project.study.repository.PostRepository;
 import com.project.study.repository.SubGroupRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 public class SubGroupService {
+    private final PostRepository postRepository;
     @Autowired
     SubGroupRepository subGroupRepository;
 
@@ -52,7 +55,10 @@ public class SubGroupService {
             subGroupDto.setId(subGroup.getSubGroupId());
             subGroupDto.setName(subGroup.getName());
             subGroupDto.setDescription(subGroup.getDescription());
-            subGroupDto.setNumberOfPosts(subGroup.getPosts().size());
+            List<Post> posts = postRepository.findAllBySubGroup(subGroup);
+            subGroupDto.setNumberOfPosts(posts.size());
+//            subGroupDto.setNumberOfPosts(subGroup.getPosts().size());
+            subGroupDto.setUsers(subGroup.getUsers());
             subGroupDtos.add(subGroupDto);
         }
         return subGroupDtos;
