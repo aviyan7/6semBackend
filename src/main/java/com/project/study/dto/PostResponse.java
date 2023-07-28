@@ -27,4 +27,6 @@ public class PostResponse {
     private boolean downVote;
     private List<CommentsDto> comment = new ArrayList<>();
     private List images;
+    private Integer pageNumber;
+    private Integer pageSize;
 }

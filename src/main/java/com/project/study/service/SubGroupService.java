@@ -55,9 +55,9 @@ public class SubGroupService {
             subGroupDto.setId(subGroup.getSubGroupId());
             subGroupDto.setName(subGroup.getName());
             subGroupDto.setDescription(subGroup.getDescription());
-            List<Post> posts = postRepository.findAllBySubGroup(subGroup);
+//            List<Post> posts = postRepository.findAllBySubGroup(subGroup);
+            List<Post> posts = postRepository.findAll();
             subGroupDto.setNumberOfPosts(posts.size());
-//            subGroupDto.setNumberOfPosts(subGroup.getPosts().size());
             subGroupDto.setUsers(subGroup.getUsers());
             subGroupDtos.add(subGroupDto);
         }
@@ -73,7 +73,15 @@ public class SubGroupService {
         return subGroupDto;
     }
 
-    public SubGroupDto updateSubGroup(Long id) {
+    public void updateSubGroup(Long id, SubGroupDto subGroupDto) {
+        SubGroup subGroup = subGroupRepository.findById(id).orElseThrow();
+        subGroup.setName(subGroupDto.getName());
+        subGroup.setDescription(subGroupDto.getDescription());
+        subGroup.setImageName(subGroupDto.getImages());
+        subGroupRepository.save(subGroup);
+    }
+
+    public SubGroupDto joinSubGroup(Long id) {
         SubGroup subGroup = subGroupRepository.findById(id).orElseThrow();
         Set<User> users = subGroup.getUsers();
         users.add(userService.getCurrentUser());
@@ -103,5 +111,10 @@ public class SubGroupService {
             subGroupDtos.add(subGroupDto);
         }
         return subGroupDtos;
+    }
+
+    public void deleteSubGroup(Long id) throws Exception {
+        SubGroup subGroup = subGroupRepository.findById(id).orElseThrow(Exception::new);
+        subGroupRepository.delete(subGroup);
     }
 }

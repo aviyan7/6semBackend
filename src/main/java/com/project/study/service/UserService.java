@@ -47,4 +47,21 @@ public class UserService {
 
         return userDto;
     }
+
+    public void updateUser(Long id, UserDto userDto) throws Exception {
+        User user = userRepository.findById(id).orElseThrow(Exception::new);
+        user.setFirstname(userDto.getFirstName());
+        user.setLastname(userDto.getLastName());
+        if(user.getEmail() != userDto.getEmail()){
+            userRepository.findByEmail(userDto.getEmail()).orElseThrow();
+            user.setEmail(userDto.getEmail());
+        }
+        user.setAddress(userDto.getAddress());
+        userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) throws Exception{
+        User user = userRepository.findById(id).orElseThrow(Exception::new);
+        userRepository.delete(user);
+    }
 }

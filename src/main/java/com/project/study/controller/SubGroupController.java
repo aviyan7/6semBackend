@@ -1,5 +1,6 @@
 package com.project.study.controller;
 
+import com.project.study.dto.PostRequest;
 import com.project.study.dto.SubGroupDto;
 import com.project.study.service.SubGroupService;
 import com.project.study.service.UserService;
@@ -30,13 +31,24 @@ public class SubGroupController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SubGroupDto> getSubgroup(@PathVariable Long id) {
+    public ResponseEntity<SubGroupDto> getSubGroup(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(subGroupService.subGroupDto(id));
     }
 
     @GetMapping("/join/{id}")
-    public ResponseEntity<SubGroupDto> updateSubgroup(@PathVariable Long id){
-//       subGroupService.updateSubGroup(id);
-        return ResponseEntity.status(HttpStatus.OK).body(subGroupService.updateSubGroup(id));
+    public ResponseEntity<SubGroupDto> joinSubGroup(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(subGroupService.joinSubGroup(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateSubGroup(@PathVariable Long id, @RequestBody SubGroupDto subGroupDto) throws Exception {
+        subGroupService.updateSubGroup(id, subGroupDto);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSubGroup(@PathVariable Long id) throws Exception {
+        subGroupService.deleteSubGroup(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
