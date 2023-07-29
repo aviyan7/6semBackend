@@ -140,10 +140,42 @@ public class PostService {
         return new PageImpl<>(postResponses, pageable, postResponses.size());
     }
 
+//    @Transactional(readOnly = true)
+//    public List<PostResponse> getAllUserPosts() throws Exception {
+//        User user = userService.getCurrentUser();
+//        List<Post> posts = postRepository.findAllByUser(user);
+//        List<PostResponse> postResponses = new ArrayList<>(posts.size());
+//        for (Post post : posts) {
+//            PostResponse postResponse = new PostResponse();
+//            postResponse.setId(post.getPostId());
+//            postResponse.setPostName(post.getPostName());
+//            postResponse.setDescription(post.getDescription());
+//            postResponse.setUserName(post.getUser().getFirstname());
+//            postResponse.setCreatedDate(post.getCreatedDate());
+//            postResponse.setSubGroupName(post.getSubGroup());
+////            Optional<SubGroup> subGroup = subGroupRepository.findById(post.getSubGroup().getSubGroupId());
+//            postResponse.setImages(post.getImageName());
+//            List<Comment> commentList = commentRepository.findAllByPost_PostId(post.getPostId());
+//            List<CommentsDto> commentsDtos = new ArrayList<>(commentList.size());
+//            for(Comment comment : commentList){
+//                CommentsDto commentsDto = new CommentsDto();
+//                commentsDto.setId(comment.getCommentId());
+//                commentsDto.setText(comment.getText());
+//                commentsDto.setCreatedDate(comment.getCreatedDate());
+//                commentsDto.setUserName(comment.getUser().getUsername());
+//                commentsDtos.add(commentsDto);
+//            }
+//            postResponse.setComment(commentsDtos);
+//            postResponses.add(postResponse);
+//        }
+//        return postResponses;
+//    }
+
     @Transactional(readOnly = true)
-    public List<PostResponse> getAllUserPosts() throws Exception {
+    public Page<PostResponse> getAllUserPosts(int page, int size) throws Exception {
+        Pageable pageable = PageRequest.of(page, size);
         User user = userService.getCurrentUser();
-        List<Post> posts = postRepository.findAllByUser(user);
+        List<Post> posts = postRepository.findAllByUser(user, pageable);
         List<PostResponse> postResponses = new ArrayList<>(posts.size());
         for (Post post : posts) {
             PostResponse postResponse = new PostResponse();
@@ -168,7 +200,7 @@ public class PostService {
             postResponse.setComment(commentsDtos);
             postResponses.add(postResponse);
         }
-        return postResponses;
+        return new PageImpl<>(postResponses, pageable, postResponses.size());
     }
 
 

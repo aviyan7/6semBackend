@@ -2,6 +2,7 @@ package com.project.study.controller;
 
 import com.project.study.model.EmailMessage;
 import com.project.study.service.EmailSenderService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,9 @@ public class EmailController {
 
     @PostMapping("/forgot-password")
     @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity<String> forgotPassword(@RequestBody String email) {
+    public ResponseEntity<String> forgotPassword(@RequestBody String email) throws MessagingException {
         this.emailSenderService.forgotPassword(email);
-        return new ResponseEntity<>(HttpStatus.OK);
+//        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok("Success");
     }
 }

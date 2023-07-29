@@ -6,12 +6,17 @@ import com.project.study.model.EmailMessage;
 import com.project.study.model.OtpRequest;
 import com.project.study.model.User;
 import com.project.study.repository.UserRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,6 +31,7 @@ public class EmailSenderService {
 //    private CacheManager cacheManager;
 
     private final String toEmail = "milanparajuli2058@gmail.com";
+    private final String resetLink = "http://localhost:4200/#/auth/verify-password";
     private String randomNumber = String.valueOf(ThreadLocalRandom.current().nextInt(1000000));
     @Autowired
     private UserService userService;
@@ -58,15 +64,23 @@ public class EmailSenderService {
        return randomNumber;
     }
 
-    public void forgotPassword(String email){
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("tuckingtrue@gmail.com");
-        simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject("Password Reset For StudySync");
-        simpleMailMessage.setText("Your OTP for reseting password is"+randomNumber);
-        this.javaMailSender.send(simpleMailMessage);
-//        Cache cache = cacheManager.getCache("randomNumber");
-//        cache.put(email, randomNumber);
+    public void forgotPassword(String email) throws MessagingException {
+//        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+//        simpleMailMessage.setFrom("tuckingtrue@gmail.com");
+//        simpleMailMessage.setTo(email);
+//        simpleMailMessage.setSubject("Password Reset For StudySync");
+//        simpleMailMessage.setText("Your OTP for reseting password is"+randomNumber);
+//        this.javaMailSender.send(simpleMailMessage);
+        MimeMessage message = this.javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(email);
+        helper.setSubject("Password Reset For StudySync");
+        String htmlContent = "<p>Please click the button below to reset your password:</p>"
+                + "<p><a href=\"" + resetLink + "\">"
+                + "<button style=\"background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;\">Reset Password</button>"
+                + "</a></p>";
+        helper.setText(htmlContent, true);
+        this.javaMailSender.send(message);
     }
 
     public HttpStatus verifyOtp(OtpRequest otpRequest){

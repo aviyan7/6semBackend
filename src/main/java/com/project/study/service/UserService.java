@@ -1,22 +1,27 @@
 package com.project.study.service;
 
 
+import com.project.study.dto.ResetPassword;
 import com.project.study.dto.UserDto;
 import com.project.study.model.User;
 import com.project.study.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     public UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -63,5 +68,12 @@ public class UserService {
     public void deleteUser(Long id) throws Exception{
         User user = userRepository.findById(id).orElseThrow(Exception::new);
         userRepository.delete(user);
+    }
+
+    public void resetPassword(ResetPassword resetPassword) throws Exception {
+        User user = userRepository.findByEmail(resetPassword.getEmail()).orElseThrow(Exception::new);
+        user.getPassword();
+        resetPassword.getCurrentPassword();
+        passwordEncoder.encode(resetPassword.getCurrentPassword());
     }
 }

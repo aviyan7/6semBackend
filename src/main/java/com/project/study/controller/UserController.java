@@ -1,4 +1,5 @@
 package com.project.study.controller;
+import com.project.study.dto.ResetPassword;
 import com.project.study.dto.SubGroupDto;
 import com.project.study.dto.UserDto;
 import com.project.study.model.User;
@@ -53,5 +54,11 @@ public class UserController {
         Page<User> users = userRepository.findUserByUsername(username, pageable);
         System.out.println("Users"+users);
             return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@RequestBody ResetPassword resetPassword) throws Exception {
+        userService.resetPassword(resetPassword);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

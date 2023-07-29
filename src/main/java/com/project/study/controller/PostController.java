@@ -37,9 +37,14 @@ public class PostController {
 //        return status(HttpStatus.OK).body(postService.getAllPosts());
 //    }
 
+//    @GetMapping("/user")
+//    public ResponseEntity<List<PostResponse>> getAllUserPosts() throws Exception {
+//        return status(HttpStatus.OK).body(postService.getAllUserPosts());
+//    }
+
     @GetMapping("/user")
-    public ResponseEntity<List<PostResponse>> getAllUserPosts() throws Exception {
-        return status(HttpStatus.OK).body(postService.getAllUserPosts());
+    public ResponseEntity<Page<PostResponse>> getAllUserPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "2") int size) throws Exception {
+        return status(HttpStatus.OK).body(postService.getAllUserPosts(page, size));
     }
 
 

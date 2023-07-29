@@ -17,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -28,6 +30,10 @@ public class AuthenticationService {
 
     public String register(RegisterRequest request){
         var otp = emailSenderService.registerUser(request);
+        Optional<User> client = repository.findByEmail(request.getEmail());
+        if(client.isPresent()){
+            throw new RuntimeException("User is already registered!!!");
+        }
         var user = User.builder()
                 .firstname(request.getFirstName())
                 .lastname(request.getLastName())
@@ -59,6 +65,10 @@ public class AuthenticationService {
         User user = null;
         try {
             user = repository.findByEmail(request.getEmail()).orElseThrow(ChangeSetPersister.NotFoundException::new);
+            System.out.println("user"+user.getRole());
+//            if(user.getRole() == Role.ADMIN){
+//
+//            }
         } catch (ChangeSetPersister.NotFoundException e) {
             throw new RuntimeException(e);
         }
