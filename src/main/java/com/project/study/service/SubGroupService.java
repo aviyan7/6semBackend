@@ -97,6 +97,21 @@ public class SubGroupService {
 //        return ResponseEntity;
     }
 
+    public SubGroupDto removeSubGroup(Long id) {
+        SubGroup subGroup = subGroupRepository.findById(id).orElseThrow();
+        Set<User> users = subGroup.getUsers();
+        users.remove(userService.getCurrentUser());
+        subGroup.setUsers(users);
+        subGroupRepository.save(subGroup);
+        SubGroupDto subGroupDto = new SubGroupDto();
+        subGroupDto.setId(subGroup.getSubGroupId());
+        subGroupDto.setName(subGroup.getName());
+        subGroupDto.setDescription(subGroup.getDescription());
+        subGroupDto.setUsers(subGroup.getUsers());
+        return subGroupDto;
+//        return ResponseEntity;
+    }
+
     @Transactional (readOnly = true)
     public List<SubGroupDto> getAllSubGroupWithoutUser() {
         List<SubGroup> subgroups = subGroupRepository.findAllGroupsNotContainingUser(userService.getCurrentUser());

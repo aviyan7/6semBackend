@@ -14,10 +14,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import org.springframework.util.StringUtils;
 
 @Service
 public class FileStorageService {
-    private final Path root = Paths.get("D:\\myprojects\\gitbataeautaprojectre\\studyFrontend\\studyFrontend\\src\\assets");
+    private final Path root = Paths.get("D:\\myprojects\\studymanagement-system\\src\\assets\\image");
 
     public void init() {
         try {
@@ -34,10 +35,23 @@ public class FileStorageService {
             if (e instanceof FileAlreadyExistsException) {
                 throw new RuntimeException("A file of that name already exists.");
             }
-
             throw new RuntimeException(e.getMessage());
         }
     }
+
+//    public void save(MultipartFile file) {
+//        try {
+//            String originalFilename = file.getOriginalFilename();
+//            String fileExtension = StringUtils.getFilenameExtension(originalFilename);
+//            String uniqueFilename = System.currentTimeMillis() + "." + fileExtension;
+//            Files.copy(file.getInputStream(), this.root.resolve(uniqueFilename));
+//        } catch (Exception e) {
+//            if (e instanceof FileAlreadyExistsException) {
+//                throw new RuntimeException("A file of that name already exists.");
+//            }
+//            throw new RuntimeException(e.getMessage());
+//        }
+//    }
 
     public Resource load(String filename) {
         try {

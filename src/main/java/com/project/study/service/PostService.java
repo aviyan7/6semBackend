@@ -140,6 +140,42 @@ public class PostService {
         return new PageImpl<>(postResponses, pageable, postResponses.size());
     }
 
+    @Transactional(readOnly = true)
+    public Page<PostResponse> getTotalPosts(int page, int size) throws Exception {
+        Pageable pageable = PageRequest.of(page, size);
+        List<SubGroup> subGroups = subGroupRepository.findAll();
+        List<PostResponse> postResponses = new ArrayList<>();
+        for (SubGroup subGroup : subGroups) {
+            Page<Post> postsPage = postRepository.findAllBySubGroup(subGroup, pageable);
+            List<Post> posts = postsPage.getContent();
+            for(Post post : posts){
+                PostResponse postResponse = new PostResponse();
+                postResponse.setId(post.getPostId());
+                postResponse.setPostName(post.getPostName());
+                postResponse.setDescription(post.getDescription());
+                postResponse.setUserName(post.getUser().getFirstname());
+                postResponse.setCreatedDate(post.getCreatedDate());
+                postResponse.setSubGroupName(post.getSubGroup());
+                postResponse.setImages(post.getImageName());
+                postResponse.setPageSize(size);
+                postResponse.setPageNumber(page);
+                List<Comment> commentList = commentRepository.findAllByPost_PostId(post.getPostId());
+                List<CommentsDto> commentsDtos = new ArrayList<>(commentList.size());
+                for(Comment comment : commentList){
+                    CommentsDto commentsDto = new CommentsDto();
+                    commentsDto.setId(comment.getCommentId());
+                    commentsDto.setText(comment.getText());
+                    commentsDto.setCreatedDate(comment.getCreatedDate());
+                    commentsDto.setUserName(comment.getUser().getUsername());
+                    commentsDtos.add(commentsDto);
+                }
+                postResponse.setComment(commentsDtos);
+                postResponses.add(postResponse);
+            }
+        }
+        return new PageImpl<>(postResponses, pageable, postResponses.size());
+    }
+
 //    @Transactional(readOnly = true)
 //    public List<PostResponse> getAllUserPosts() throws Exception {
 //        User user = userService.getCurrentUser();
@@ -220,5 +256,15 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(Exception::new);
         commentRepository.deleteAll(commentRepository.findAllByPost_PostId(post.getPostId()));
         postRepository.delete(post);
+    }
+
+    public List<Post> searchPost(String Keyword) throws Exception {
+//        User user = userService.getCurrentUser();
+//        List<SubGroup> subGroups = subGroupRepository.findAllByUsers(user);
+//        for(SubGroup subGroup: subGroups){
+//           List<Post> posts = postRepository.findAll();
+//        }
+        List<Post> posts = postRepository.searchPosts(Keyword);
+        return posts;
     }
 }

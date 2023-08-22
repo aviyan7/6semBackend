@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,13 +24,31 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserDto> userDtos = new ArrayList<>();
+        for(User user : users){
+            UserDto userDto = new UserDto();
+            userDto.setId(user.getId());
+            userDto.setEmail(user.getEmail());
+            userDto.setFirstName(user.getFirstname());
+            userDto.setLastName(user.getLastname());
+            userDto.setAddress(user.getAddress());
+            userDto.setRole(user.getRole());
+            userDtos.add(userDto);
+        }
+        return userDtos;
     }
 
-    public User getUserById(Long userId) {
+    public UserDto getUserById(Long userId) {
         User user = userRepository.findById(userId).get();
-        return user;
+        UserDto userDto = new UserDto();
+        userDto.setFirstName(user.getFirstname());
+        userDto.setLastName(user.getLastname());
+        userDto.setEmail(user.getEmail());
+        userDto.setAddress(user.getAddress());
+        userDto.setRole(user.getRole());
+        return userDto;
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +68,7 @@ public class UserService {
         userDto.setLastName(foundUser.getLastname());
         userDto.setEmail(foundUser.getEmail());
         userDto.setAddress(foundUser.getAddress());
-
+        userDto.setRole(foundUser.getRole());
         return userDto;
     }
 

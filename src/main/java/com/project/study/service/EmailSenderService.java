@@ -2,6 +2,7 @@ package com.project.study.service;
 
 import com.project.study.auth.RegisterRequest;
 import com.project.study.config.JwtService;
+import com.project.study.dto.PostRequest;
 import com.project.study.model.EmailMessage;
 import com.project.study.model.OtpRequest;
 import com.project.study.model.User;
@@ -32,6 +33,7 @@ public class EmailSenderService {
 
     private final String toEmail = "milanparajuli2058@gmail.com";
     private final String resetLink = "http://localhost:4200/#/auth/verify-password";
+    private String viewPostLink = "http://localhost:4200/view-post/";
     private String randomNumber = String.valueOf(ThreadLocalRandom.current().nextInt(1000000));
     @Autowired
     private UserService userService;
@@ -93,6 +95,20 @@ public class EmailSenderService {
             return HttpStatus.CREATED;
         }
         return HttpStatus.EXPECTATION_FAILED;
+    }
+
+    public void sendNotificationByEmail(String to, String subGroupName, PostRequest postRequest) throws MessagingException {
+        MimeMessage message = this.javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(to);
+        helper.setSubject("New Post Added in group "+subGroupName+" Titled : " +postRequest.getPostName());
+        String htmlContent = "<p>New Post has been added in the group you are a member of. Please click the button below to view the post:</p>"
+                + "<p><a href=\"" + viewPostLink + postRequest.getPostName()+"\">"
+                + "<button style=\"background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;\">View Post</button>"
+                + "</a></p>";
+        helper.setText(htmlContent, true);
+
+        javaMailSender.send(message);
     }
 
 }

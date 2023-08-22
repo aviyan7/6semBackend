@@ -40,6 +40,11 @@ public class SubGroupController {
         return ResponseEntity.status(HttpStatus.OK).body(subGroupService.joinSubGroup(id));
     }
 
+    @GetMapping("/remove/{id}")
+    public ResponseEntity<SubGroupDto> removeSubGroup(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(subGroupService.removeSubGroup(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateSubGroup(@PathVariable Long id, @RequestBody SubGroupDto subGroupDto) throws Exception {
         subGroupService.updateSubGroup(id, subGroupDto);

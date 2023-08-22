@@ -4,6 +4,7 @@ import com.project.study.dto.PostRequest;
 import com.project.study.dto.PostResponse;
 import com.project.study.model.Post;
 import com.project.study.repository.PostRepository;
+import com.project.study.service.NotificationService;
 import com.project.study.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,15 @@ import static org.springframework.http.ResponseEntity.status;
 public class PostController {
     @Autowired
     PostService postService;
+
+    @Autowired
+    NotificationService notificationService;
     private final PostRepository postRepository;
 
     @PostMapping
     public ResponseEntity<Void> createPost(@RequestBody PostRequest postRequest) throws Exception {
         postService.save(postRequest);
+        notificationService.sendNotification(postRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -71,6 +76,16 @@ public class PostController {
     @GetMapping
     public ResponseEntity<Page<PostResponse>> getAllPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "2")int size) throws Exception {
         return status(HttpStatus.OK).body(postService.getAllPosts(page, size));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Page<PostResponse>> getTotalPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "2")int size) throws Exception {
+        return status(HttpStatus.OK).body(postService.getTotalPosts(page, size));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Post>> searchPost(@RequestParam String keyword) throws Exception {
+        return status(HttpStatus.OK).body(postService.searchPost(keyword));
     }
 
 }

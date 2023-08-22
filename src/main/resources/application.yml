@@ -17,8 +17,8 @@
     mail:
       host: smtp.gmail.com
       port: 587
-      username: tuckingtrue@gmail.com
-      password: pmjktchdenhlieuw
+      username: kaamchalau@gmail.com
+      password: tiyopasswordkbujeuni
       properties:
         mail:
           smtp:

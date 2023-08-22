@@ -24,9 +24,9 @@ public class EmailController {
 
     @PostMapping("/forgot-password")
     @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity<String> forgotPassword(@RequestBody String email) throws MessagingException {
+    public ResponseEntity<Void> forgotPassword(@RequestBody String email) throws MessagingException {
         this.emailSenderService.forgotPassword(email);
 //        return new ResponseEntity<>(HttpStatus.OK);
-        return ResponseEntity.ok("Success");
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
