@@ -18,7 +18,8 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class FileStorageService {
-    private final Path root = Paths.get("D:\\myprojects\\studymanagement-system\\src\\assets\\image");
+//    private final Path root = Paths.get("D:\\myprojects\\studymanagement-system\\src\\assets\\image");
+    private final Path root = Paths.get("C:\\Users\\dell\\IdeaProjects\\studyManagement\\src\\assets\\image");
 
     public void init() {
         try {

@@ -48,7 +48,7 @@ public class PostController {
 //    }
 
     @GetMapping("/user")
-    public ResponseEntity<Page<PostResponse>> getAllUserPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "2") int size) throws Exception {
+    public ResponseEntity<Page<PostResponse>> getAllUserPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "4") int size) throws Exception {
         return status(HttpStatus.OK).body(postService.getAllUserPosts(page, size));
     }
 
@@ -66,7 +66,7 @@ public class PostController {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Post>> getPageablePost(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "2")int size){
+    public ResponseEntity<Page<Post>> getPageablePost(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "4")int size){
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> posts = postRepository.findAll(pageable);
         System.out.println("Posts"+posts);
@@ -74,12 +74,12 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PostResponse>> getAllPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "2")int size) throws Exception {
+    public ResponseEntity<Page<PostResponse>> getAllPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "4")int size) throws Exception {
         return status(HttpStatus.OK).body(postService.getAllPosts(page, size));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<PostResponse>> getTotalPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "2")int size) throws Exception {
+    public ResponseEntity<Page<PostResponse>> getTotalPosts(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "4")int size) throws Exception {
         return status(HttpStatus.OK).body(postService.getTotalPosts(page, size));
     }
 

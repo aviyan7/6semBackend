@@ -31,7 +31,7 @@ public class EmailSenderService {
 //    @Autowire
 //    private CacheManager cacheManager;
 
-    private final String toEmail = "milanparajuli2058@gmail.com";
+    private final String toEmail = "tuckingtrue@gmail.com";
     private final String resetLink = "http://localhost:4200/#/auth/verify-password";
     private String viewPostLink = "http://localhost:4200/view-post/";
     private String randomNumber = String.valueOf(ThreadLocalRandom.current().nextInt(1000000));
@@ -48,6 +48,7 @@ public class EmailSenderService {
         simpleMailMessage.setText(
                 "Name:" + emailMessage.getName() + "\nPhone Number:" + emailMessage.getPhoneNumber()
                         + "\nEmail:" + emailMessage.getEmail() + "\nMessage:" + emailMessage.getMessage());
+        System.out.println(simpleMailMessage);
         this.javaMailSender.send(simpleMailMessage);
     }
 
@@ -58,6 +59,7 @@ public class EmailSenderService {
         simpleMailMessage.setSubject("Registration For StudySync");
         simpleMailMessage.setText("Welcome"+' '+request.getFirstName()+' '+request.getLastName()+"\n"
         +"Your One Time Password is "+randomNumber);
+        System.out.println(simpleMailMessage);
         this.javaMailSender.send(simpleMailMessage);
 //        var otpToken = jwtService.generateOtpToken(Integer.valueOf(randomNumber));
 //        return AuthenticationResponse.builder()
@@ -82,6 +84,7 @@ public class EmailSenderService {
                 + "<button style=\"background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;\">Reset Password</button>"
                 + "</a></p>";
         helper.setText(htmlContent, true);
+        System.out.println(message);
         this.javaMailSender.send(message);
     }
 
@@ -107,7 +110,7 @@ public class EmailSenderService {
                 + "<button style=\"background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;\">View Post</button>"
                 + "</a></p>";
         helper.setText(htmlContent, true);
-
+        System.out.println(message);
         javaMailSender.send(message);
     }
 

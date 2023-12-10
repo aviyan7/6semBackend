@@ -41,6 +41,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .address(request.getAddress())
                 .role(Role.USER)
+                .enabled(true)
                 .build();
 
         repository.save(user);

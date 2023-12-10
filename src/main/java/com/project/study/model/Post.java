@@ -26,7 +26,7 @@ public class Post {
     private String postName;
 
     @Nullable
-    @Lob
+    @Column(length = 255)
     private String description;
 
     private Instant createdDate;

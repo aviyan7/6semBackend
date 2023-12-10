@@ -24,6 +24,7 @@ public class SubGroup {
     @GeneratedValue(strategy = IDENTITY)
     private Long subGroupId;
     private String name;
+    @Column(length = 255)
     private String description;
     @OneToMany(fetch = LAZY)
     private List<Post> posts;
