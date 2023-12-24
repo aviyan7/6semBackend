@@ -10,6 +10,7 @@ import lombok.NonNull;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -43,4 +44,5 @@ public class Post {
 
     @ElementCollection
     private List<String> imageName;
+
 }
